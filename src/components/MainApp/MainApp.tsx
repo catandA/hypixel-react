@@ -14,7 +14,7 @@ import { Modal } from 'react-bootstrap';
 import ReloadDialog from '../ReloadDialog/ReloadDialog';
 import 'react-contexify/dist/ReactContexify.css';
 import { startMigrations } from '../../migrations/MigrationUtils';
-
+import { Helmet } from "react-helmet";
 
 export function MainApp(props: any) {
 
@@ -109,6 +109,15 @@ export function MainApp(props: any) {
 
     return (
         <ThemeProvider theme={theme}>
+            <Helmet>
+                <title>Skyblock Auction House History</title>
+                <link rel="canonical" href={location.origin + location.pathname} />
+                <meta property="og:title" content="Skyblock Auction House History" />
+                <meta property="og:description" content="Browse over 100 million auctions, and the bazzar of Hypixel SkyBlock" />
+                <meta property="og:url" content={location.origin + location.pathname} />
+                <meta property="og:image" content="https://sky.coflnet.com/logo192.png" />
+                <meta property="keywords" content="flipper,hypixel,skyblock,auction,history,bazaar,tracker" />
+            </Helmet>
             <OfflineBanner />
             {props.children}
             <CookieConsent

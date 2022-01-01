@@ -3,12 +3,9 @@ import './Flipper.css';
 import FlipperComponent from '../../components/Flipper/Flipper';
 import { Container } from 'react-bootstrap';
 import Search from '../../components/Search/Search';
+import { Helmet } from "react-helmet";
 
 function Flipper() {
-
-    useEffect(() => {
-        document.title = "Auction flipper for hypixel skyblock";
-    })
 
     return (
         <div className="flipper">
@@ -20,6 +17,12 @@ function Flipper() {
                 <hr />
                 <FlipperComponent />
             </Container>
+            <Helmet>
+                <title>{`Auction flipper for hypixel skyblock`}</title>
+                <meta property="og:title" content="Skyblock AH history auction flipper | Hypixel SkyBlock AH history" />
+                <meta property="og:description" content={"Free auction house item flipper for Hypixel Skyblock"} />
+                <meta property="keywords" content="flipper,hypixel,skyblock,auction,history,bazaar,tracker" />
+            </Helmet>
         </div >
     );
 }

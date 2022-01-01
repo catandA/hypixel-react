@@ -13,6 +13,7 @@ import SubscribeButton from '../SubscribeButton/SubscribeButton';
 import RecentAuctions from '../RecentAuctions/RecentAuctions';
 import { getItemFilterFromUrl } from '../../utils/Parser/URLParser';
 import ActiveAuctions from '../ActiveAuctions/ActiveAuctions';
+import { Helmet } from 'react-helmet';
 
 interface Props {
     item: Item
@@ -196,6 +197,13 @@ function PriceGraph(props: Props) {
                     <ActiveAuctions item={props.item} filter={itemFilter} /> :
                     ""
             }
+            <Helmet>
+                <title>{props.item.name + " | Hypixel SkyBlock AH history tracker"}</title>
+                <meta property="og:title" content={props.item.name + " | Hypixel SkyBlock AH history tracker"} />
+                <meta property="og:description" content={"Price for the item '" + props.item.name + "' in hypixel SkyBlock is " + numberWithThousandsSeperators(avgPrice) + " Coins on average."} />
+                <meta property="og:image" content={props.item.iconUrl} />
+                <meta property="keywords" content="flipper,hypixel,skyblock,auction,history,bazaar,tracker" />
+            </Helmet>
         </div >
     );
 }

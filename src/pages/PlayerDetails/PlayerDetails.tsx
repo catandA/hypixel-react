@@ -11,6 +11,7 @@ import ClaimAccount from './ClaimAccount/ClaimAccount';
 import PlayerDetailsList from '../../components/PlayerDetailsList/PlayerDetailsList';
 import { wasAlreadyLoggedIn } from '../../utils/GoogleUtils';
 import GoogleSignIn from '../../components/GoogleSignIn/GoogleSignIn';
+import { Helmet } from "react-helmet";
 
 enum DetailType {
     AUCTIONS = "auctions",
@@ -42,7 +43,6 @@ function PlayerDetails() {
                 uuid: uuid,
                 name: name
             }));
-            document.title = `Auctions and bids from ${name} in the hypixel skyblock ah`
         });
     }, [uuid]);
 
@@ -121,6 +121,13 @@ function PlayerDetails() {
                 {detailType === DetailType.AUCTIONS ? <PlayerDetailsList type="auctions" loadingDataFunction={api.getAuctions} playerUUID={uuid} /> : undefined}
                 {detailType === DetailType.BIDS ? <PlayerDetailsList type="bids" loadingDataFunction={api.getBids} playerUUID={uuid} /> : undefined}
             </Container>
+            <Helmet>
+                <title>{`Auctions and bids from ${selectedPlayer?.name} in the hypixel skyblock ah`}</title>
+                <meta property="og:title" content={selectedPlayer?.name + "Auctions and bids | Hypixel SkyBlock AH history"} />
+                <meta property="og:description" content={"Auctions and bids for " + selectedPlayer?.name + "in hypixel skyblock."} />
+                <meta id="og-image" property="og:image" content={selectedPlayer?.iconUrl?.substr(0, selectedPlayer.iconUrl.length - 7)} />
+                <meta property="keywords" content="flipper,hypixel,skyblock,auction,history,bazaar,tracker" />
+            </Helmet>
         </div >
     );
 }
