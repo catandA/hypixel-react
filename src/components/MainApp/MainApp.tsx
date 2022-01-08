@@ -3,7 +3,6 @@ import { useMatomo } from '@datapunt/matomo-tracker-react'
 import { useLocation } from "react-router-dom";
 import CookieConsent from 'react-cookie-consent';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { OfflineBanner } from '../OfflineBanner/OfflineBanner';
 import { useHistory } from "react-router-dom";
 import registerNotificationCallback from '../../utils/NotificationUtils';
@@ -12,7 +11,6 @@ import { getURLSearchParam } from '../../utils/Parser/URLParser';
 import Cookies from 'js-cookie';
 import { Modal } from 'react-bootstrap';
 import ReloadDialog from '../ReloadDialog/ReloadDialog';
-import 'react-contexify/dist/ReactContexify.css';
 import { startMigrations } from '../../migrations/MigrationUtils';
 
 
@@ -24,7 +22,7 @@ export function MainApp(props: any) {
     const location = useLocation();
     const history = useHistory();
 
-    const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersDarkMode = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     useEffect(() => {
         let preventReloadDialog = localStorage.getItem("rememberHideReloadDialog") === "true";
@@ -80,7 +78,7 @@ export function MainApp(props: any) {
     useEffect(() => {
         trackPageView({});
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [document.title]);
+    }, [typeof window !== 'undefined' ? document.title : ""]);
 
     const theme = React.useMemo(
         () =>

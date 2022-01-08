@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import GoogleSignIn from "../GoogleSignIn/GoogleSignIn";
 import Payment from "../Payment/Payment";
 import './Premium.css';
-import { wasAlreadyLoggedIn } from '../../utils/GoogleUtils';
+import { getGoogleIdFromLocalStorage, wasAlreadyLoggedIn } from '../../utils/GoogleUtils';
 import { getLoadingElement } from "../../utils/LoadingUtils";
 import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import NavBar from "../NavBar/NavBar";
@@ -32,7 +32,7 @@ function Premium() {
     }, []);
 
     function loadHasPremiumUntil(): Promise<void> {
-        let googleId = localStorage.getItem('googleId');
+        let googleId = getGoogleIdFromLocalStorage();
         return api.hasPremium(googleId!).then((hasPremiumUntil) => {
             let hasPremium = false;
             if (hasPremiumUntil !== undefined && hasPremiumUntil.getTime() > new Date().getTime()) {
@@ -46,7 +46,7 @@ function Premium() {
 
 
     function onLogin() {
-        let googleId = localStorage.getItem('googleId');
+        let googleId = getGoogleIdFromLocalStorage();
         if (googleId) {
             setIsLoading(true);
             setIsLoggedIn(true);

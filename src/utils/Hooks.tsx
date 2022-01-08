@@ -7,6 +7,11 @@ export function useForceUpdate() {
 }
 
 export function useSwipe(onSwipeUp?: Function, onSwipeRight?: Function, onSwipeDown?: Function, onSwipeLeft?: Function) {
+
+    if (typeof window === 'undefined') {
+        return () => { }
+    }
+
     document.addEventListener('touchstart', handleTouchStart, false);
     document.addEventListener('touchmove', handleTouchMove, false);
 

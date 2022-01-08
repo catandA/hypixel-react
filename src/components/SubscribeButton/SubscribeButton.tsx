@@ -6,7 +6,6 @@ import api from '../../api/ApiHelper';
 import { SubscriptionType } from '../../api/ApiTypes.d';
 import GoogleSignIn from '../GoogleSignIn/GoogleSignIn';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useHistory } from "react-router-dom";
 import askForNotificationPermissons from '../../utils/NotificationPermisson';
 import { NotificationsOutlined as NotificationIcon } from '@material-ui/icons';

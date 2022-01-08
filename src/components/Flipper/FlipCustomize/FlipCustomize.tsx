@@ -28,7 +28,9 @@ function FlipCustomize() {
     function setFlipCustomizeSettings(settings: FlipCustomizeSettings) {
         setSetting(FLIP_CUSTOMIZING_KEY, JSON.stringify(settings));
         _setFlipCustomizeSettings(settings);
-        document.dispatchEvent(new CustomEvent("flipSettingsChange"));
+        if (typeof window !== 'undefined') {
+            document.dispatchEvent(new CustomEvent("flipSettingsChange"));
+        }
     }
 
     function onCostChange(event: ChangeEvent<HTMLInputElement>) {

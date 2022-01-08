@@ -32,7 +32,7 @@ function ClaimAccount(props: Props) {
             setIsLoading(false);
         })
 
-        let id = window.setInterval(loadMcInfo, 30000)
+        let id = typeof window !== 'undefined' ? window.setInterval(loadMcInfo, 30000) : 0
         setReloadMcInfoIntervalId(id);
     }
 

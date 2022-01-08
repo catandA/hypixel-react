@@ -98,7 +98,7 @@ export function parseItem(item: any): Item {
         iconUrl: item.iconUrl || item.icon,
         tier: item.tier,
         description: item.description,
-        bazaar: item.bazaar
+        bazaar: item.bazaar || false
     }
 }
 

@@ -28,8 +28,8 @@ function ItemDetails() {
 
     let getItem = (): Item => {
         return item || parseItem({
-            tag: tag,
-            name: convertTagToName(tag)
+            tag: tag || "ASPECT OF THE END",
+            name: convertTagToName(tag || "ASPECT OF THE END")
         })
     }
 

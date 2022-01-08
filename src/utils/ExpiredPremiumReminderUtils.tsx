@@ -1,11 +1,11 @@
 import { toast } from "react-toastify";
-import { wasAlreadyLoggedIn } from "./GoogleUtils";
+import { getGoogleIdFromLocalStorage, wasAlreadyLoggedIn } from "./GoogleUtils";
 import { getSetting, PREMIUM_EXPIRATION_NOFIFY_DATE_KEY, setSetting } from "./SettingsUtils";
 
 export function checkForExpiredPremium(premiumExpirationDate: Date) {
 
     let wasAlreadyLoggedInGoogle = wasAlreadyLoggedIn();
-    let googleId = localStorage.getItem("googleId");
+    let googleId = getGoogleIdFromLocalStorage();
 
     if (!wasAlreadyLoggedInGoogle || !googleId) {
         return;

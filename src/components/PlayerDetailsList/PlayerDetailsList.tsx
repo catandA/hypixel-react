@@ -151,7 +151,7 @@ function PlayerDetailsList(props: Props) {
                 type: props.type,
                 listElements: listElements,
                 playerUUID: props.playerUUID,
-                yOffset: window.pageYOffset,
+                yOffset: typeof window !== 'undefined' ? window.pageYOffset : 0,
                 allElementsLoaded: allElementsLoaded
             })
         }

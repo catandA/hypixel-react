@@ -1,5 +1,11 @@
 export default function askForNotificationPermissons(): Promise<string> {
+
     return new Promise((resolve, reject) => {
+
+        if (typeof localStorage === "undefined") {
+            resolve("");
+        }
+
         let token = localStorage.getItem('fcmToken');
         if (token) {
             resolve(token as string);

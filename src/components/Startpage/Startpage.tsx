@@ -14,59 +14,71 @@ function Startpage() {
 
     let { trackEvent } = useMatomo();
 
-    let [newAuctions, setNewAuctions] = useState<Auction[]>([{ uuid: "", bin: false, end: new Date(), highestBid: 0, item: { tag: "ASPECT_OF_THE_END", name: "Loading ..." }, startingBid: 0 }]);
+    let [a, error] = useSSE(loadNewAuctions, []);
+
+    let [newAuctions, setNewAuctions] = useState<Auction[]>(a || []);
     let [endedAuctions, setEndedAuctions] = useState<Auction[]>([]);
     let [popularSearches, setPopularSearches] = useState<PopularSearch[]>([]);
     let [newPlayers, setNewPlayers] = useState<Player[]>([]);
     let [newItems, setNewItems] = useState<Item[]>([]);
 
-    useEffect(() => {
-        loadNewAuctions();
-        loadPopularSearches();
-        loadEndedAuctions();
-        loadNewPlayers();
-        loadNewItems();
+    useSSE(() => {
+
+        console.log("STARTPAGE USEEFFECT")
 
         attachScrollEvent('startpage-list-element-wrapper');
+
+        return Promise.all([
+            loadNewAuctions(),
+            loadPopularSearches(),
+            loadEndedAuctions(),
+            loadNewPlayers(),
+            loadNewItems()
+        ])
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    let loadNewAuctions = () => {
-        api.getNewAuctions().then(auctions => {
+    function loadNewAuctions() {
+        return api.getNewAuctions().then(auctions => {
             auctions.forEach(auction => {
                 auction.item.iconUrl = api.getItemImageUrl(auction.item);
             })
             setNewAuctions(auctions);
+            return auctions;
         });
     }
 
     let loadPopularSearches = () => {
-        api.getPopularSearches().then(popularSearches => {
+        return api.getPopularSearches().then(popularSearches => {
             setPopularSearches(popularSearches);
+            return popularSearches;
         });
     }
 
     let loadEndedAuctions = () => {
-        api.getEndedAuctions().then(endedAuctions => {
+        return api.getEndedAuctions().then(endedAuctions => {
             endedAuctions.forEach(auction => {
                 auction.item.iconUrl = api.getItemImageUrl(auction.item);
             })
             setEndedAuctions(endedAuctions);
+            return endedAuctions;
         });
     }
 
     let loadNewPlayers = () => {
-        api.getNewPlayers().then(newPlayers => {
+        return api.getNewPlayers().then(newPlayers => {
             setNewPlayers(newPlayers);
+            return newPlayers;
         })
     }
 
     let loadNewItems = () => {
-        api.getNewItems().then(newItems => {
+        return api.getNewItems().then(newItems => {
             newItems.forEach(item => {
                 item.iconUrl = api.getItemImageUrl(item);
             })
             setNewItems(newItems);
+            return newItems;
         })
     }
 
@@ -109,6 +121,9 @@ function Startpage() {
     }
 
     function attachScrollEvent(className: string) {
+        if (typeof window === 'undefined') {
+            return;
+        }
         let scrollContainers = document.getElementsByClassName(className);
         for (var i = 0; i < scrollContainers.length; i++) {
             let container = scrollContainers.item(i);
@@ -136,7 +151,7 @@ function Startpage() {
                 itemCount={newAuctions.length}
                 itemSize={200}
                 layout="horizontal"
-                width={document.getElementById('new-auctions-body')?.offsetWidth || 100}
+                width={typeof document !== "undefined" ? (document.getElementById('new-auctions-body')?.offsetWidth || 100) : 100}
             >
                 {({ index, style }) => {
                     return getAuctionElement(newAuctions[index], style);
@@ -154,7 +169,7 @@ function Startpage() {
                 itemCount={popularSearches.length}
                 itemSize={200}
                 layout="horizontal"
-                width={document.getElementById('popular-searches-body')?.offsetWidth || 100}
+                width={typeof document !== "undefined" ? (document.getElementById('popular-searches-body')?.offsetWidth || 100) : 100}
             >
                 {({ index, style }) => {
                     let search = popularSearches[index];
@@ -183,7 +198,7 @@ function Startpage() {
                 itemCount={endedAuctions.length}
                 itemSize={200}
                 layout="horizontal"
-                width={document.getElementById('ended-auctions-body')?.offsetWidth || 100}
+                width={typeof document !== "undefined" ? (document.getElementById('ended-auctions-body')?.offsetWidth || 100) : 100}
             >
                 {({ index, style }) => {
                     return getAuctionElement(endedAuctions[index], style);
@@ -200,7 +215,7 @@ function Startpage() {
                 itemCount={newPlayers.length}
                 itemSize={200}
                 layout="horizontal"
-                width={document.getElementById('new-players-body')?.offsetWidth || 100}
+                width={typeof document !== "undefined" ? (document.getElementById('new-players-body')?.offsetWidth || 100) : 100}
             >
                 {({ index, style }) => {
                     let newPlayer = newPlayers[index];
@@ -229,7 +244,7 @@ function Startpage() {
                 itemCount={newItems.length}
                 itemSize={200}
                 layout="horizontal"
-                width={document.getElementById('new-items-body')?.offsetWidth || 100}
+                width={typeof document !== "undefined" ? (document.getElementById('new-items-body')?.offsetWidth || 100) : 100}
             >
                 {({ index, style }) => {
                     let newItem = newItems[index];

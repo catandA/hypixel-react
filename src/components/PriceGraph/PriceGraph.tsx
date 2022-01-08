@@ -189,7 +189,7 @@ function PriceGraph(props: Props) {
                     <div style={{ float: "right" }}><ShareButton title={"Prices for " + props.item.name} text="See list, search and filter item prices from the auction house and bazar in Hypixel Skyblock" /></div>
                 </div>
                 <hr />
-                {props.item?.bazaar || fetchspan <= 0 ? <p className="bazaar-notice">This is a bazaar item. There are no recent auctions.</p> : <RecentAuctions fetchspan={fetchspan} item={props.item} itemFilter={itemFilter} />}
+                {(props.item && props.item.bazaar) || fetchspan <= 0 ? <p className="bazaar-notice">This is a bazaar item. There are no recent auctions.</p> : <RecentAuctions fetchspan={fetchspan} item={props.item} itemFilter={itemFilter} />}
             </div>
             {
                 fetchspan <= 0 ?

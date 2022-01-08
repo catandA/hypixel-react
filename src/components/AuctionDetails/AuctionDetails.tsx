@@ -80,6 +80,9 @@ function AuctionDetails(props: Props) {
     }
 
     let setDocumentTitle = (auctionDetails: AuctionDetails) => {
+        if (typeof window === 'undefined') {
+            return;
+        }
         document.title = "Auction from " + auctionDetails.auctioneer.name + " for " + auctionDetails.auction.item.name;
     }
 
@@ -224,7 +227,7 @@ function AuctionDetails(props: Props) {
                         </div>
                         : ""}
                     <CopyButton buttonVariant="primary" copyValue={
-                        isRunning(auctionDetails) ? "/viewauction " + props.auctionUUID : document.location.href}
+                        isRunning(auctionDetails) ? "/viewauction " + props.auctionUUID : typeof window !== 'undefined' ? document.location.href : ""}
                         successMessage={isRunning(auctionDetails) ? <p>Copied ingame link <br /><i>/viewauction {props.auctionUUID}</i></p> : <p>Copied link to clipboard</p>}
                     />
                 </div>

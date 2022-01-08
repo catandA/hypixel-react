@@ -3,6 +3,11 @@ const LOCAL_STORAGE_SETTINGS_KEY = "userSettings";
 let settings = getInitUserSettings();
 
 function getInitUserSettings(): any {
+
+    if (typeof localStorage === "undefined") {
+        return;
+    }
+
     let item = localStorage.getItem(LOCAL_STORAGE_SETTINGS_KEY);
 
     // item === "\"{}\"" is a wrong state and has to be reset (fix for users that still have this in the local storage)
@@ -23,6 +28,11 @@ export function getSetting(key: string): string {
 
 
 export function getSettingsObject<T>(key: string, defaultValue: T) {
+
+    if (typeof window === "undefined") {
+        return JSON.parse("{}");
+    }
+
     let object = settings[key] || JSON.stringify(defaultValue);
     let parsed: T;
     try {
@@ -34,6 +44,11 @@ export function getSettingsObject<T>(key: string, defaultValue: T) {
 }
 
 export function setSetting(key: any, value: any) {
+
+    if (typeof localStorage === "undefined") {
+        return;
+    }
+
     settings[key] = value;
     localStorage.setItem(LOCAL_STORAGE_SETTINGS_KEY, JSON.stringify(settings));
 }

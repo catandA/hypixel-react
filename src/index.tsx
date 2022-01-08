@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import routes from "../src/routes";
 
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <div id="react-container">
     <BrowserRouter children={routes} />
   </div>

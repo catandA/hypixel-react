@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import api from '../../api/ApiHelper';
 import Navbar from '../../components/NavBar/NavBar';
 import GoogleSignIn from '../GoogleSignIn/GoogleSignIn';
-import { wasAlreadyLoggedIn } from '../../utils/GoogleUtils';
+import { getGoogleIdFromLocalStorage, wasAlreadyLoggedIn } from '../../utils/GoogleUtils';
 import { getLoadingElement } from '../../utils/LoadingUtils';
 import { Card } from 'react-bootstrap';
 import { getProperty } from '../../utils/PropertiesUtils';
@@ -21,7 +21,7 @@ function Ref(props: Props) {
     let [isLoggedIn, setIsLoggedIn] = useState(false);
 
     function onLogin() {
-        let googleId = localStorage.getItem('googleId');
+        let googleId = getGoogleIdFromLocalStorage();
         if (googleId) {
             setIsLoggedIn(true);
             api.getRefInfo().then(refInfo => {

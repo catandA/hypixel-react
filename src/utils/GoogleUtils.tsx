@@ -1,5 +1,5 @@
 export function wasAlreadyLoggedIn() {
-    return localStorage.getItem("googleId") !== null;
+    return getGoogleIdFromLocalStorage() !== null;
 }
 
 let refreshTimeout;
@@ -7,7 +7,7 @@ let refreshTimeout;
 export function refreshTokenSetup(res) {
 
     //refresh has already been started
-    if(refreshTimeout){
+    if (refreshTimeout) {
         return;
     }
 
@@ -21,13 +21,20 @@ export function refreshTokenSetup(res) {
     }, refreshTiming);
 }
 
-export function refreshToken(obj): Promise<any>{
+export function refreshToken(obj): Promise<any> {
     return new Promise((resolve, reject) => {
+        if (typeof localStorage === "undefined") {
+            resolve(null);
+        }
         obj.reloadAuthResponse().then(refreshToken => {
             localStorage.setItem('googleId', refreshToken.id_token);
             resolve(refreshToken);
         });
     });
+}
+
+export function getGoogleIdFromLocalStorage() {
+    return typeof localStorage !== "undefined" ? localStorage.getItem('googleId') : null;
 }
 
 export const googlePlayPackageName = 'de.flou.hypixel.skyblock';

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { ProSidebar, Menu, MenuItem, SidebarHeader } from 'react-pro-sidebar';
-import 'react-pro-sidebar/dist/css/styles.css';
 import './NavBar.css';
 import { Link } from 'react-router-dom';
 import { Build as BuildIcon, ShareOutlined as ShareIcon, NotificationsOutlined as NotificationIcon, Home as HomeIcon, Storefront as StorefrontIcon, AccountBalance as AccountBalanceIcon, Policy as PolicyIcon, Chat as ChatIcon, Menu as MenuIcon, ExploreOutlined as ExploreIcon } from '@material-ui/icons';
 import { useForceUpdate } from '../../utils/Hooks';
 
-let resizePromise: NodeJS.Timeout | null = null;
+let resizePromise: number | null = null;
 
 interface Props {
     hamburgerIconStyle?: React.CSSProperties
@@ -18,22 +17,24 @@ function NavBar(props: Props) {
     let [isHovering, setIsHovering] = useState(false);
     let forceUpdate = useForceUpdate();
 
-    let isSmall = document.body.clientWidth < 1500;
+    let isSmall = typeof window !== 'undefined' ? document.body.clientWidth < 1500 : true;
 
-    window.addEventListener("resize", function (event) {
-        if (resizePromise) {
-            return;
-        }
-        resizePromise = setTimeout(() => {
-            setIsWideOpen(false);
-            forceUpdate();
-            resizePromise = null;
-            let el = document.getElementById('pro-sidebar');
-            if (el) {
-                el.style.left = "0px";
+    useEffect(() => {
+        window.addEventListener("resize", function (event) {
+            if (resizePromise) {
+                return;
             }
-        }, 500)
-    })
+            resizePromise = window.setTimeout(() => {
+                setIsWideOpen(false);
+                forceUpdate();
+                resizePromise = null;
+                let el = document.getElementById('pro-sidebar');
+                if (el) {
+                    el.style.left = "0px";
+                }
+            }, 500)
+        })
+    }, [])
 
     useEffect(() => {
         if (isWideOpen) {

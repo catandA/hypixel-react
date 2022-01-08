@@ -3,7 +3,7 @@ import './ShareButton.css';
 import { Badge, Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { v4 as generateUUID } from 'uuid';
-import {ShareOutlined as ShareIcon} from '@material-ui/icons';
+import { ShareOutlined as ShareIcon } from '@material-ui/icons';
 
 interface Props {
     title: string,
@@ -19,7 +19,7 @@ function ShareButton(props: Props) {
     let [showOverlayTrigger, setShowOverlayTrigger] = useState(false);
 
     function checkShareAPI(): boolean {
-        return navigator.share !== undefined;
+        return typeof navigator !== "undefined" ? navigator.share !== undefined : false;
     }
 
     function onShare() {

@@ -10,12 +10,18 @@ export function getItemFilterFromUrl(): ItemFilter {
     return itemFilterBase64 ? parseItemFilter(itemFilterBase64) : {};
 }
 export function setURLSearchParam(key: string, value: string): string {
+    if (typeof window === 'undefined') {
+        return "";
+    }
     let searchParams = new URLSearchParams(window.location.search);
     searchParams.set(key, value);
     return searchParams.toString()
 }
 
 export function getURLSearchParam(key: string): string | null {
+    if (typeof window === 'undefined') {
+        return null;
+    }
     let searchParams = new URLSearchParams(window.location.search);
     return searchParams.get(key);
 }

@@ -1,0 +1,1 @@
+//!tier ? DEFAULT_COLOR : (TIER_COLORS[tier.toString().toUpperCase()] || 

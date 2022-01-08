@@ -131,11 +131,11 @@ export function ItemPriceRange(props: Props) {
 
     return (
         <ToggleButtonGroup className="item-price-range" type="radio" name="options" value={selectedDateRange} onChange={onRangeChangeClick}>
-            <ToggleButton className="price-range-button" value={DateRange.ACTIVE} variant={getButtonVariant(DateRange.ACTIVE)} disabled={props.disabled || props.item.bazaar} onChange={removeWrongFocus} size="sm">Active</ToggleButton>
+            <ToggleButton className="price-range-button" value={DateRange.ACTIVE} variant={getButtonVariant(DateRange.ACTIVE)} disabled={props.disabled || (props.item ? props.item.bazaar : false)} onChange={removeWrongFocus} size="sm">Active</ToggleButton>
             <ToggleButton className="price-range-button" value={DateRange.DAY} variant={getButtonVariant(DateRange.DAY)} disabled={props.disabled} onChange={removeWrongFocus} size="sm">1 Day</ToggleButton>
             <ToggleButton className="price-range-button" value={DateRange.WEEK} variant={getButtonVariant(DateRange.WEEK)} disabled={props.disabled} onChange={removeWrongFocus} size="sm">1 Week</ToggleButton>
             <ToggleButton className="price-range-button" value={DateRange.MONTH} variant={getButtonVariant(DateRange.MONTH)} disabled={props.disabled} onChange={removeWrongFocus} size="sm">1 Month</ToggleButton>
             <ToggleButton className="price-range-button" value={DateRange.ALL} variant={getButtonVariant(DateRange.ALL)} disabled={props.disabled || props.disableAllTime} onChange={removeWrongFocus} size="sm">All Time</ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButtonGroup >
     )
 }

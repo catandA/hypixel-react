@@ -13,7 +13,7 @@ function ItemDetails() {
 
     useEffect(() => {
         document.title = "About";
-    })
+    }, [])
 
     function setTrackingAllowed(event: ChangeEvent<HTMLInputElement>) {
         let val = event.target.checked;

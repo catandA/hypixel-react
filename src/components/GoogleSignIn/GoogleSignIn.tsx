@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GoogleLogin } from "react-google-login";
 import { toast } from "react-toastify";
 import api from "../../api/ApiHelper";
-import { refreshTokenSetup } from "../../utils/GoogleUtils";
+import { getGoogleIdFromLocalStorage, refreshTokenSetup } from "../../utils/GoogleUtils";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useForceUpdate } from "../../utils/Hooks";
 
@@ -16,7 +16,7 @@ let gotResponse = false;
 
 function GoogleSignIn(props: Props) {
 
-    let [googleId, setGoogleId] = useState(localStorage.getItem("googleId"));
+    let [googleId, setGoogleId] = useState(getGoogleIdFromLocalStorage());
     let { trackEvent } = useMatomo();
     let forceUpdate = useForceUpdate();
 
@@ -37,7 +37,7 @@ function GoogleSignIn(props: Props) {
     }, []);
 
     useEffect(() => {
-        setGoogleId(localStorage.getItem("googleId"));
+        setGoogleId(getGoogleIdFromLocalStorage());
         forceUpdate();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.rerenderFlip]);

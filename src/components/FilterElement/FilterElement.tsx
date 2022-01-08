@@ -2,12 +2,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Form, Spinner } from 'react-bootstrap';
-import "react-datepicker/dist/react-datepicker.css";
 import './FilterElement.css';
 import DatePicker from "react-datepicker";
 import { camelCaseToSentenceCase, convertTagToName } from '../../utils/Formatter';
 import { Typeahead, AsyncTypeahead } from 'react-bootstrap-typeahead';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
 import api from '../../api/ApiHelper';
 import { FilterType, hasFlag } from './FilterType';
 

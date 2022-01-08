@@ -19,12 +19,12 @@ function OptionsMenu(props: Props) {
     let { tag } = useParams();
 
     let available: AvailableLinks[] = [];
-    const isItemPage = window.location.href.indexOf("/item/") > 0;
-    const isPlayerPage = window.location.href.indexOf("/player/") > 0;
+    const isItemPage = typeof window !== 'undefined' ? window.location.href.indexOf("/item/") > 0 : true;
+    const isPlayerPage = typeof window !== 'undefined' ? window.location.href.indexOf("/player/") > 0 : false;
     if (isItemPage) {
         let name = props.selected?.name;
         available.push({ title: "Wiki", url: "https://hypixel-skyblock.fandom.com/wiki/" + name })
-        if ((props.selected as Item).bazaar)
+        if (props.selected && (props.selected as Item).bazaar)
             available.push({ title: "Skyblock.bz", url: "https://Skyblock.bz/product/" + tag })
         else
             available.push({ title: "HyAuctions", url: "https://craftlink.xyz/items/" + tag })

@@ -10,7 +10,7 @@ import { KeyboardTab as ArrowRightIcon, Delete as DeleteIcon, Help as HelpIcon, 
 import FlipBased from './FlipBased/FlipBased';
 import { CopyButton } from '../CopyButton/CopyButton';
 import AuctionDetails from '../AuctionDetails/AuctionDetails';
-import { wasAlreadyLoggedIn } from '../../utils/GoogleUtils';
+import { getGoogleIdFromLocalStorage, wasAlreadyLoggedIn } from '../../utils/GoogleUtils';
 import { FixedSizeList as List } from 'react-window';
 import { Link, useHistory } from 'react-router-dom';
 import Tooltip from '../Tooltip/Tooltip';
@@ -61,7 +61,7 @@ function Flipper() {
 
     const listRef = useRef(null);
 
-    let isSmall = document.body.clientWidth < 1000;
+    let isSmall = typeof window !== 'undefined' ? document.body.clientWidth < 1000 : "";
 
     const autoscrollRef = useRef(autoscroll);
     autoscrollRef.current = autoscroll;
@@ -96,7 +96,7 @@ function Flipper() {
     }
 
     let loadHasPremium = () => {
-        let googleId = localStorage.getItem("googleId");
+        let googleId = getGoogleIdFromLocalStorage();
         api.hasPremium(googleId!).then(hasPremiumUntil => {
             if (hasPremiumUntil > new Date()) {
                 setHasPremium(true);
@@ -257,7 +257,7 @@ function Flipper() {
 
         setFlips(flips => [...flips, newFlipAuction]);
 
-        if (autoscrollRef.current) {
+        if (typeof window !== 'undefined' && autoscrollRef.current) {
             let element = document.getElementsByClassName('flipper-scroll-list').length > 0 ? document.getElementsByClassName('flipper-scroll-list').item(0) : null;
             if (element) {
                 element.scrollBy({ left: 16000, behavior: 'smooth' })
@@ -423,12 +423,12 @@ function Flipper() {
                             <List
                                 ref={listRef}
                                 className="flipper-scroll-list"
-                                height={flips.length > 0 ? document.getElementById('maxHeightDummyFlip')?.offsetHeight : 0}
+                                height={flips.length > 0 && typeof window !== 'undefined' ? document.getElementById('maxHeightDummyFlip')?.offsetHeight : 100}
                                 itemCount={flips.length}
                                 itemData={{ flips: flips }}
                                 itemSize={isSmall ? 300 : 330}
                                 layout="horizontal"
-                                width={document.getElementById('flipper-card-body')?.offsetWidth || 100}
+                                width={typeof window !== 'undefined' ? (document.getElementById('flipper-card-body')?.offsetWidth || 100) : 100}
                             >
                                 {getFlipForList}
                             </List>
@@ -510,7 +510,15 @@ function Flipper() {
                                 </Card.Header>
                                 <Card.Body>
                                     <p>Get free premium time by inviting other people to our website. For further information check out our <Link to="/ref">Referral-Program</Link>.</p>
-                                    <p>Your Link to invite people: <span style={{ fontStyle: "italic", color: "skyblue" }}>{window.location.href.split("?")[0] + "?refId=" + refInfo?.refId}</span> <CopyButton copyValue={window.location.href.split("?")[0] + "?refId=" + refInfo?.refId} successMessage={<span>Copied Ref-Link</span>} /></p>
+                                    <p>Your Link to invite people: <span style={{ fontStyle: "italic", color: "skyblue" }}>
+                                        {
+                                            typeof window !== 'undefined' ? window.location.href.split("?")[0] + "?refId=" + refInfo?.refId : ""
+                                        }
+                                    </span> <CopyButton successMessage={<span>Copied Ref-Link</span>} copyValue=
+                                        {
+                                            typeof window !== 'undefined' ? window.location.href.split("?")[0] + "?refId=" + refInfo?.refId : ""
+                                        } />
+                                    </p>
                                 </Card.Body>
                             </Card>
                         </div>

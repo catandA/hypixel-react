@@ -8,7 +8,7 @@ function ApiInfo() {
 
     useEffect(() => {
         document.title = "API";
-    })
+    }, [])
 
     return (
         <div className="api-info-page">

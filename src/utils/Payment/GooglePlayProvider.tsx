@@ -12,6 +12,10 @@ export default function GooglePlayProvider(): AbstractPaymentProvider {
 
     let checkIfPaymentIsPossible = (): boolean => {
 
+        if (typeof window === 'undefined') {
+            return false;
+        }
+
         if (!window.PaymentRequest) {
             return false;
         }

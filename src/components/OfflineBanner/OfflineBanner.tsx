@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
 import './OfflineBanner.css';
 
 
@@ -18,6 +17,9 @@ export function OfflineBanner(props: any) {
     }, [])
 
     function setOnlineState() {
+        if (typeof navigator === "undefined") {
+            return;
+        }
         setIsOnline(navigator.onLine);
     }
 

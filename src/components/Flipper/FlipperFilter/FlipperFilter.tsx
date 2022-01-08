@@ -60,6 +60,10 @@ function FlipperFilter(props: Props) {
 
     function checkAutoNumeric() {
 
+        if (typeof window === 'undefined') {
+            return;
+        }
+
         let autoNumericElements = [{
             id: 'filter-input-min-profit',
             stateName: 'minProfit',

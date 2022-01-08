@@ -28,6 +28,9 @@ let cacheUtils: CacheUtils = {
         set(type + data, JSON.stringify(entry)).catch(() => { });
     },
     checkForCacheClear: function () {
+        if (typeof window === 'undefined') {
+            return;
+        }
         api.getVersion().then(version => {
             let localVersion = window.localStorage.getItem("version");
             if (window.caches !== undefined && localVersion !== version) {

@@ -52,7 +52,7 @@ export function CopyButton(props: Props) {
     }
 
     return (
-        <span>{window.navigator.clipboard ?
+        <span>{typeof window !== 'undefined' && typeof navigator !== "undefined" && window.navigator.clipboard ?
             <span className={props.buttonWrapperClass}>
                 <Button style={props.buttonStyle} onMouseDown={copyClick} className={"copy-button-default-class " + props.buttonClass} aria-label="copy to clipboard" variant={props.buttonVariant || "secondary"}>{isCopied || props.forceIsCopied ? copiedIcon : copyIcon}</Button>
             </span> : ""}
