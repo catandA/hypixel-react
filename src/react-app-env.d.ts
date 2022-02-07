@@ -219,7 +219,8 @@ interface API {
   triggerPlayerNameCheck(playerUUID: string): Promise<void>,
   getPlayerProfiles(playerUUID): Promise<SkyblockProfile[]>,
   getCraftingRecipe(itemTag: string): Promise<CraftingRecipe>,
-  getLowestBin(itemTag: string): Promise<LowestBin>
+  getLowestBin(itemTag: string): Promise<LowestBin>,
+  getFlipSettings(): Promise<ApiFlipSettings>
 }
 
 interface CacheUtils {
@@ -407,4 +408,37 @@ interface GoogleProfileInfo {
   name?: string,
   email?: string,
   imageUrl?: string
+}
+
+interface ApiFlipSettings {
+  whitelist: [{ tag: string; filter: ItemFilter }]
+  blacklist: [{ tag: string; filter: ItemFilter }]
+  minProfit: number
+  minProfitPercent: number
+  minVolume: number
+  maxCost: number
+  filters: {}
+  lbin: boolean
+  mod: {
+      justProfit: boolean
+      soundOnFlip: boolean
+      shortNumbers: boolean
+      blockTenSecMsg: boolean
+      format: string
+      chat: boolean
+  }
+  visibility: {
+      cost: boolean
+      estProfit: boolean
+      lbin: boolean
+      slbin: boolean
+      medPrice: boolean
+      seller: boolean
+      volume: boolean
+      extraFields: number
+      profitPercent: boolean
+      sellerOpenBtn: boolean
+      lore: boolean
+  }
+  finders: number
 }

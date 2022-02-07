@@ -509,48 +509,9 @@ function initAPI(): API {
 
         websocketHelper.removeOldSubscriptionByType(RequestType.SUBSCRIBE_FLIPS);
 
-        let flipSettings = getFlipCustomizeSettings();
-
-        let requestData = {
-            whitelist: restrictionList.filter(restriction => restriction.type === "whitelist").map(restriction => { return { tag: restriction.item?.tag, filter: restriction.itemFilter } }),
-            blacklist: restrictionList.filter(restriction => restriction.type === "blacklist").map(restriction => { return { tag: restriction.item?.tag, filter: restriction.itemFilter } }),
-            minProfit: filter.minProfit || 0,
-            minProfitPercent: filter.minProfitPercent || 0,
-            minVolume: filter.minVolume || 0,
-            maxCost: filter.maxCost || 0,
-            filters: {},
-            lbin: flipSettings.useLowestBinForProfit,
-            mod: {
-                justProfit: flipSettings.justProfit,
-                soundOnFlip: flipSettings.soundOnFlip,
-                shortNumbers: flipSettings.shortNumbers,
-                blockTenSecMsg: flipSettings.blockTenSecMsg,
-                format: flipSettings.modFormat,
-                chat: !flipSettings.hideModChat
-            },
-            visibility: {
-                cost: !flipSettings.hideCost,
-                estProfit: !flipSettings.hideEstimatedProfit,
-                lbin: !flipSettings.hideLowestBin,
-                slbin: !flipSettings.hideSecondLowestBin,
-                medPrice: !flipSettings.hideMedianPrice,
-                seller: !flipSettings.hideSeller,
-                volume: !flipSettings.hideVolume,
-                extraFields: flipSettings.maxExtraInfoFields,
-                profitPercent: !flipSettings.hideProfitPercent,
-                sellerOpenBtn: !flipSettings.hideSellerOpenBtn,
-                lore: !flipSettings.hideLore
-            },
-            finders: flipSettings.finders?.reduce((a, b) => +a + +b, 0)
-        }
-
-        if (filter.onlyBin) {
-            requestData.filters = { Bin: "true" };
-        }
-
         websocketHelper.subscribe({
             type: RequestType.SUBSCRIBE_FLIPS,
-            data: requestData,
+            data: JSON.stringify(null),
             callback: function (response) {
                 switch (response.type) {
                     case 'flip':
@@ -1062,6 +1023,23 @@ function initAPI(): API {
         })
     }
 
+    let getFlipSettings =  (): Promise<ApiFlipSettings> => {
+        return new Promise((resolve, reject) => {
+
+            websocketHelper.sendRequest({
+                type: RequestType.GET_FLIP_SETTINGS,
+                data: "",
+                resolve: function (settings) {
+                    console.log(settings);
+                },
+                reject: function (error) {
+                    apiErrorHandler(RequestType.GET_FLIP_SETTINGS, error, "");
+                    reject();
+                }
+            });
+        })
+    }
+
     return {
         search,
         trackSearch,
@@ -1114,7 +1092,8 @@ function initAPI(): API {
         triggerPlayerNameCheck,
         getPlayerProfiles,
         getCraftingRecipe,
-        getLowestBin
+        getLowestBin,
+        getFlipSettings
     }
 }
 
