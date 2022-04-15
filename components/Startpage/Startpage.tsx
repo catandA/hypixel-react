@@ -315,23 +315,15 @@ function Startpage(props: Props) {
                             <AnnouncementIcon />
                             <span className={styles.statusTitle}> News / Announcements</span>
                         </Card.Title>
-                        <Card.Subtitle>Minecraft Mod (Alpha release)</Card.Subtitle>
+                        <Card.Subtitle>Flip Tracking</Card.Subtitle>
                     </Card.Header>
                     <Card.Body>
                         <p>
-                            We created a Minecraft mod as a QoL-Feature. It connects to the website and shows the flips you get there in your Minecraft chat for
-                            you to click.
-                        </p>
-                        <p>
-                            The mod can be downloaded on our{' '}
-                            <a target="_blank" rel="noreferrer" href="https://discord.gg/wNRgeCYmW9">
-                                discord
-                            </a>{' '}
-                            in the channel "mod-releases".
+                            You can now look at the flips of the last 7 days and see the profit you made. To do that search a player and click "Check tracked flips".
                         </p>
                         <hr />
                         <div style={{ marginTop: '20px' }}>
-                            <p>Recent changes (last change: 23.10.2021):</p>
+                            <p>Recent changes (last change: 16.04.2022):</p>
                             <Tooltip
                                 onClick={onRecentChangesClick}
                                 content={
@@ -341,10 +333,10 @@ function Startpage(props: Props) {
                                 }
                                 tooltipContent={
                                     <ul key="changelogList">
-                                        <li className={styles.changelogItem}>Integration of the alpha mod</li>
-                                        <li className={styles.changelogItem}>Import/Export flipper settings</li>
-                                        <li className={styles.changelogItem}>Context menu in the flipper</li>
-                                        <li className={styles.changelogItem}>Lots of UI improvements</li>
+                                        <li className={styles.changelogItem}>Store settings serverside (to allow to update settings from the mod)</li>
+                                        <li className={styles.changelogItem}>Added Flip-Tracking</li>
+                                        <li className={styles.changelogItem}>Added Kat-Flips</li>
+                                        <li className={styles.changelogItem}>Huge performance improvements</li>
                                     </ul>
                                 }
                                 type="click"
