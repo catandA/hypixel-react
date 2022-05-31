@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-import cacheUtils from "./CacheUtils";
 
 export default function registerNotificationCallback(router) {
     let interval = setInterval(function () {
@@ -10,9 +9,6 @@ export default function registerNotificationCallback(router) {
 
         messaging.onMessage(function (payload) {
             let notification = payload.notification;
-            if (payload.data.type === "auction") {
-                savePayloadIntoCache(payload);
-            }
             displayNotification(notification);
         });
     }, 10);
@@ -26,10 +22,5 @@ export default function registerNotificationCallback(router) {
             },
             autoClose: 20000
         });
-    }
-
-    function savePayloadIntoCache(payload: any) {
-        let auction = JSON.parse(payload.data.auction);
-        cacheUtils.setIntoCache("auctionDetails", JSON.stringify(auction.uuid), auction, 60);
     }
 }

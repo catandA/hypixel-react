@@ -1,5 +1,4 @@
 import { ApiRequest, HttpApi } from './ApiTypes.d'
-import cacheUtils from '../utils/CacheUtils'
 import { getProperty } from '../utils/PropertiesUtils'
 import { getNextMessageId } from '../utils/MessageIdUtils'
 import { isClientSideRendering } from '../utils/SSRUtils'
@@ -26,28 +25,21 @@ export function initHttpHelper(customCommandEndpoint?: string, customApiEndpoint
             url += `/${cacheInvalidationGrouping}`
         }
 
-        return cacheUtils.getFromCache(request.type, requestString).then(cacheValue => {
-            if (cacheValue) {
-                request.resolve(cacheValue)
-                return
-            }
+        try {
+            request.data = btoaUnicode(requestString)
+        } catch (error) {
+            throw new Error('couldnt btoa this data: ' + request.data)
+        }
 
-            try {
-                request.data = btoaUnicode(requestString)
-            } catch (error) {
-                throw new Error('couldnt btoa this data: ' + request.data)
-            }
-
-            // don't resend in progress requests
-            let equals = findForEqualSentRequest(request)
-            if (equals.length > 0) {
-                requests.push(request)
-                return
-            }
-
+        // don't resend in progress requests
+        let equals = findForEqualSentRequest(request)
+        if (equals.length > 0) {
             requests.push(request)
-            return handleServerRequest(request, url)
-        })
+            return
+        }
+
+        requests.push(request)
+        return handleServerRequest(request, url)
     }
 
     /**
@@ -126,14 +118,6 @@ export function initHttpHelper(customCommandEndpoint?: string, customApiEndpoint
                 equals.forEach(equal => {
                     equal.resolve(parsedResponse)
                 })
-                // all http answers are valid for 60 sec
-                let maxAge = 60
-
-                let data = request.data
-                try {
-                    data = atobUnicode(request.data)
-                } catch {}
-                cacheUtils.setIntoCache(request.customRequestURL || request.type, data, parsedResponse, maxAge)
                 removeSentRequests([...equals, request])
             })
             .finally(() => {

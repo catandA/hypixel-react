@@ -1,11 +1,10 @@
-import { ApiRequest, WebsocketHelper, ApiSubscription, RequestType } from "./ApiTypes.d";
-import cacheUtils from '../utils/CacheUtils';
-import api from "./ApiHelper";
-import { toast } from "react-toastify";
-import { getProperty } from '../utils/PropertiesUtils';
-import { getNextMessageId } from "../utils/MessageIdUtils";
-import { refreshToken} from "../utils/GoogleUtils";
-import { atobUnicode, btoaUnicode } from "../utils/Base64Utils";
+import { ApiRequest, WebsocketHelper, ApiSubscription, RequestType } from './ApiTypes.d'
+import api from './ApiHelper'
+import { toast } from 'react-toastify'
+import { getProperty } from '../utils/PropertiesUtils'
+import { getNextMessageId } from '../utils/MessageIdUtils'
+import { refreshToken } from '../utils/GoogleUtils'
+import { btoaUnicode } from '../utils/Base64Utils'
 
 let requests: ApiRequest[] = []
 let websocket: WebSocket
@@ -35,8 +34,8 @@ function initWebsocket(): void {
 
         // set the connection id first
         api.setConnectionId().then(() => {
-            isConnectionIdSet = true;
-            let googleAuthObj = (window as any).googleAuthObj;
+            isConnectionIdSet = true
+            let googleAuthObj = (window as any).googleAuthObj
             if (localStorage.getItem('googleId') !== null && googleAuthObj) {
                 if (new Date(googleAuthObj.tokenObj.expires_at).getTime() <= new Date().getTime()) {
                     refreshToken(googleAuthObj).then(refreshToken => {
@@ -68,9 +67,6 @@ function initWebsocket(): void {
             let parsedResponse = JSON.parse(response.data)
             request.resolve(parsedResponse)
             equals.forEach(equal => equal.resolve(parsedResponse))
-            // cache the response
-            let maxAge = response.maxAge
-            cacheUtils.setIntoCache(request.type, atobUnicode(request.data), parsedResponse, maxAge)
         }
 
         removeSentRequests([...equals, request])
@@ -121,30 +117,23 @@ function sendRequest(request: ApiRequest): Promise<void> {
     if (!websocket) {
         initWebsocket()
     }
-    let requestString = JSON.stringify(request.data)
-    return cacheUtils.getFromCache(request.type, requestString).then(cacheValue => {
-        if (cacheValue) {
-            request.resolve(cacheValue)
-            return
-        }
 
-        if (_isWebsocketReady(request.type, websocket)) {
-            request.mId = getNextMessageId()
-            let equals = findForEqualSentRequest(request)
-            if (equals.length > 0) {
-                requests.push(request)
-                return
-            }
+    if (_isWebsocketReady(request.type, websocket)) {
+        request.mId = getNextMessageId()
+        let equals = findForEqualSentRequest(request)
+        if (equals.length > 0) {
             requests.push(request)
-            prepareDataBeforeSend(request)
-            websocket.send(JSON.stringify(request))
-        } else {
-            setTimeout(() => {
-                sendRequest(request)
-            }, 500)
             return
         }
-    })
+        requests.push(request)
+        prepareDataBeforeSend(request)
+        websocket.send(JSON.stringify(request))
+    } else {
+        setTimeout(() => {
+            sendRequest(request)
+        }, 500)
+        return
+    }
 }
 
 function prepareDataBeforeSend(request: ApiRequest) {

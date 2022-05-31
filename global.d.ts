@@ -237,8 +237,6 @@ interface API {
 }
 
 interface CacheUtils {
-    getFromCache(type: string, data: string): Promise<ApiResponse | null>
-    setIntoCache(type: string, data: string, response: ApiResponse, maxAge: number = 0): void
     checkForCacheClear(): void
     clearAll(): void
 }
