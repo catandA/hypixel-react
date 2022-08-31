@@ -300,6 +300,7 @@ export function CraftsList(props: Props) {
 
     return (
         <div>
+            <p style={{ color: 'red' }}>Because of a technical issue, kat flips are temporarily disabled. Sorry for the inconvenience.</p>
             <div>
                 {isLoadingProfileData && isLoggedIn ? (
                     getLoadingElement()

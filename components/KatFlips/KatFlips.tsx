@@ -236,6 +236,7 @@ export function KatFlips(props: Props) {
 
     return (
         <div className={styles.catFlips}>
+            <p style={{ color: 'red' }}>Because of a technical issue, kat flips are temporarily disabled. Sorry for the inconvenience.</p>
             <div>
                 <GoogleSignIn onAfterLogin={onAfterLogin} />
                 {!isLoggedIn ? <hr /> : ''}

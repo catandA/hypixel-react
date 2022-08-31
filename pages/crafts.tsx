@@ -27,6 +27,12 @@ function Crafts(props: Props) {
 }
 
 export const getServerSideProps = async () => {
+    return {
+        props: {
+            crafts: [],
+            bazaarTags: []
+        }
+    }
     let api = initAPI(true)
     let results = await Promise.all([api.getProfitableCrafts(), api.getBazaarTags()])
     return {

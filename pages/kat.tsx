@@ -26,6 +26,11 @@ function Kat(props: Props) {
 }
 
 export const getServerSideProps = async () => {
+    return {
+        props: {
+            flips: []
+        }
+    }
     let api = initAPI(true)
     let katFlips = await api.getKatFlips()
     return {
