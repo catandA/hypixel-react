@@ -36,6 +36,12 @@ function Startpage(props: Props) {
             attachScrollEvent(styles.startpageListElementWrapper)
         }, 500)
         loadEndedAuctions()
+        Promise.all([api.getNewAuctions(), api.getNewPlayers(), api.getPopularSearches(), api.getNewItems()].map(p => p.catch(e => null))).then(results => {
+            setNewAuctions(results[0] || [])
+            setNewPlayers(results[1] || [])
+            setPopularSearches(results[2] || [])
+            setNewItems(results[3] || [])
+        })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -447,9 +453,9 @@ function Startpage(props: Props) {
                     <p>View, search, browse, and filter by reforge or enchantment.</p>
                     <p>You can find all current and historic prices for the auction house and bazaar on this web tracker.</p>
                     <p>
-                        We're tracking over 400 million auctions. We've saved more than 250 million bazaar prices in intervals of 10 seconds. Furthermore,
-                        there are over two million skyblock players that you can search by their Minecraft usernames. You can browse through the auctions they
-                        made over the past two years. New Items are added automatically and available within two miniutes after the first auction is started.
+                        We're tracking over 400 million auctions. We've saved more than 250 million bazaar prices in intervals of 10 seconds. Furthermore, there
+                        are over two million skyblock players that you can search by their Minecraft usernames. You can browse through the auctions they made
+                        over the past two years. New Items are added automatically and available within two miniutes after the first auction is started.
                     </p>
                     <p>
                         The search autocomplete is ranked by popularity and allows you to find whatever item you want faster. Quick urls allow you to link to
